@@ -1,4 +1,4 @@
-package com.dbtest.DBE;
+package com.dbtest.DBE.Database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -10,7 +10,7 @@ public class ConnectionDB {
 	
 	private static Connection conn;
 	
-	public static void main(String args[])
+	public Connection MainConnection()
 	{
 		try
 		{
@@ -25,11 +25,13 @@ public class ConnectionDB {
 			{
 				System.out.print("Not connected");
 			}
+			return conn;
 			
 		}catch(Exception e)
 		{
 			System.out.print(e.getMessage());
 		}
+		return conn;
 		
 	}
 	

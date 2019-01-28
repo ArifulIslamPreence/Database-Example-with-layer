@@ -1,4 +1,4 @@
-package com.dbtest.DBE;
+package com.dbtest.DBE.Models;
 
 public class Games {
 	
@@ -7,6 +7,16 @@ public class Games {
 	private String genre;
 	private String publisher;
 	private int price;
+	
+	public Games(int id,String name,String genre,String publisher,int price)
+	{
+		this.id = id;
+		this.name = name;
+		this.genre = genre;
+		this.publisher = publisher;
+		this.price = price;
+		
+	}
 	
 	public void setId(int id)
 	{
