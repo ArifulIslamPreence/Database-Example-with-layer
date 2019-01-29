@@ -16,17 +16,18 @@ import com.dbtest.DBE.Models.Games;
 public class OperationDB 
 {
 	ConnectionDB conn = new ConnectionDB();
-	PreparedStatement ps ;
 	Statement st;
 	
-	public boolean insert(Games game) throws SQLException
+	public boolean insert(Games game)
 	{
-		try 
+		try (PreparedStatement ps= conn.MainConnection().prepareStatement("INSERT INTO Ariful_Gamelist(name,genre,publisher,price)"
+				+"VALUES(?,?,?,?)"))
 		{
-			ps = conn.MainConnection().prepareStatement("INSERT INTO Ariful_Gamelist(name,genre,publisher,price)"
-										+"VALUES(?,?,?,?)");
-			ps.setInt(1,game.getId());
-			ps.setString(2,game.getName() );
+		
+			
+			
+			ps.setString(1,game.getName() );
+			ps.setString(2, game.getGenre());
 			ps.setString(3, game.getPublisher());
 			ps.setInt(4, game.getPrice());
 			
@@ -40,25 +41,16 @@ public class OperationDB
 		
 		return false;
 		}
-		finally
-		{
-			if(conn.MainConnection() != null)
-			{
-				conn.MainConnection().close();
-			}
-			else
-			{
-				System.out.print("Error");
-			}
-		}
+	
 		
 	}
 	
-	public boolean update(Games game) throws SQLException
+	public boolean update(Games game) 
 	{
-		try
+		try(PreparedStatement ps= conn.MainConnection().prepareStatement(
+				"UPDATE Ariful_Gamelist SET name = ?,genre = ?,publisher = ? price = ? WHERE id = ?"))
 		{
-			ps = conn.MainConnection().prepareStatement("UPDATE Ariful_Gamelist SET name = ?,genre = ?,publisher = ? price = ? WHERE id = ?");
+			
 			ps.setInt(1, game.getId());
 			ps.setString(2,game.getName() );
 			ps.setString(3, game.getPublisher());
@@ -74,81 +66,53 @@ public class OperationDB
 			return false;
 			
 		}
-		finally
-		{
-			if(conn.MainConnection() != null)
-			{
-				conn.MainConnection().close();
-			}
-			else
-			{
-				System.out.println("Connection didnt close");
-			}
-		}
+		
 	 }
 	
-	public boolean delete(int id) throws SQLException
+	public boolean delete(int id)
 	{
-		try
-		{
-			ps = conn.MainConnection().prepareStatement("DELETE FROM Ariful_Gamelist  WHERE id = "+id+";");
+			
+		
+			try(PreparedStatement ps = conn.MainConnection().prepareStatement(
+										"DELETE FROM Ariful_Gamelist  WHERE id = "+id+";")) {
+				
+				ps.executeUpdate();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			
-			ps.executeUpdate();
+		
 			
 			return true;
-		}catch(SQLException e)
-		{
-			System.out.println(e.getMessage());
+		
 			
-			return false;
 			
-		}
-		finally
-		{
-			if(conn.MainConnection() != null)
-			{
-				conn.MainConnection().close();
-			}
-			else
-			{
-				System.out.println("Connection didnt close");
-			}
-		}
 	 }
 	
-	public  ResultSet viewAll() throws SQLException
+	public  ResultSet viewAll()
 	{
-		try 
-		{
-		st = conn.MainConnection().createStatement();
-		ResultSet rs = st.executeQuery("SELECT * FROM Ariful_Gamelist");
 		
-		return rs;
+		ResultSet rs;
+		try(Statement st = conn.MainConnection().createStatement()) 
+		{
+	
+		rs = st.executeQuery("SELECT * FROM Ariful_Gamelist");
+		
 		}catch(SQLException e)
 		{
 			e.printStackTrace();
 			return null;
 		}
-		finally
-		{
-			if(conn.MainConnection() != null)
-			{
-				conn.MainConnection().close();
-			}
-			else
-			{
-				System.out.println("Connection didnt close");
-			}
-			
-		}
+		return rs;
 	}
 		
-	public ResultSet viewSpecific(int id) throws SQLException
+	public ResultSet viewSpecific(int id)
 		{
-			try 
+			try (Statement st = conn.MainConnection().createStatement())
 			{
-			st = conn.MainConnection().createStatement();
+			
 			ResultSet rs = st.executeQuery("SELECT * FROM Ariful_Gamelist WHERE id = "+id+";");
 			
 			return rs;
@@ -158,26 +122,15 @@ public class OperationDB
 				e.printStackTrace();
 				return null;
 			}
-			finally
-			{
-				if(conn.MainConnection() != null)
-				{
-					conn.MainConnection().close();
-				}
-				else
-				{
-					System.out.println("Connection didnt close");
-				}
-				
-			}
+			
 	
 		}
 	
 	public ResultSet getMaxPrice()
 	{
-		try
+		try(Statement st = conn.MainConnection().createStatement())
 		{
-			st = conn.MainConnection().createStatement();
+			
 			ResultSet rs = st.executeQuery("SELECT * FROM Ariful_Gamelist WHERE price ="
 										+ " (SELECT max(price) FROM Ariful_Gamelist);");
 			return rs;
@@ -191,9 +144,9 @@ public class OperationDB
 	
 	public ResultSet getMinPrice()
 	{
-		try
+		try(Statement st = conn.MainConnection().createStatement())
 		{
-			st = conn.MainConnection().createStatement();
+			
 			ResultSet rs = st.executeQuery("SELECT * FROM Ariful_Gamelist WHERE price ="
 										+ " (SELECT min(price) FROM Ariful_Gamelist);");
 			return rs;

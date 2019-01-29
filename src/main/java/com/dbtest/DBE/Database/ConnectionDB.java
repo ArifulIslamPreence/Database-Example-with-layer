@@ -19,11 +19,11 @@ public class ConnectionDB {
 			
 			if(conn != null )
 			{
-				System.out.print("Connected");
+				System.out.println("Connected");
 			}
 			else
 			{
-				System.out.print("Not connected");
+				System.out.println("Not connected");
 			}
 			return conn;
 			

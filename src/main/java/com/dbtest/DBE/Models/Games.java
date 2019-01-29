@@ -8,9 +8,9 @@ public class Games {
 	private String publisher;
 	private int price;
 	
-	public Games(int id,String name,String genre,String publisher,int price)
+	public Games(String name,String genre,String publisher,int price)
 	{
-		this.id = id;
+		
 		this.name = name;
 		this.genre = genre;
 		this.publisher = publisher;

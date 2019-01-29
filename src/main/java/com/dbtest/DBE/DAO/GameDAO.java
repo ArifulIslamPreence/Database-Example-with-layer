@@ -8,11 +8,11 @@ import com.dbtest.DBE.Models.Games;
 
 public interface GameDAO {
 
-	public boolean insertGame(Games game) throws SQLException;
-	public boolean updateGame(Games game) throws SQLException;
-	public boolean deleteGame(int id) throws SQLException;
-	List<Games> viewAllGame();
-	List<Games> viewSpecific(int id);
+	public boolean insertGame(Games game) ;
+	public boolean updateGame(Games game);
+	public boolean deleteGame(int id);
+	List<Games> viewAllGame() ;
+	List<Games> viewSpecificGame(int id);
 	List <Games> getMaxPrice();
 	List <Games> getMinPrice();
 	
